@@ -1,0 +1,2 @@
+# test2graph_distribution
+引張試験のcsvファイルからグラフ作成までを自動化したpythonプログラム配布用
