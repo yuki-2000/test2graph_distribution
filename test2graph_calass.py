@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression
-
+from matplotlib.animation import FuncAnimation
 
 
 
@@ -342,6 +342,54 @@ class TestObject:
         
         
 
+    
+
+    def make_plot_animation(self):
+        self.fig, self.ax = plt.subplots(2,2, dpi=100, figsize=(21,14))
+        self.anim = FuncAnimation(self.fig, self.plot_itime, frames=range(0,len(self.df),10), interval=10)
+        self.anim.save(self.csv_dir+"_anime.gif", writer="pillow")
+        plt.close()
+        
+        
+    def plot_itime(self, i):
+        self.ax[0,0].cla()
+        self.ax[0,0].plot(self.df["cross_head_displacement"],self.df["stress"], label="cross_head_displacement",lw=1,c="k")
+        self.ax[0,0].set_xlabel("Crosshead Displacement [mm]")
+        self.ax[0,0].set_ylabel("Stress [MPa]")
+        #self.ax[0,0].legend()
+        self.ax[0,0].axvline(self.df["cross_head_displacement"][i], c="r")
+        self.ax[0,0].plot(self.df["cross_head_displacement"][i],self.df["stress"][i], c="r", marker='v')
+        
+        
+        self.ax[0,1].cla()
+        self.ax[0,1].plot(self.df["strainLave"],self.df["stress"], label="strainLave",lw=1,c="k")
+        self.ax[0,1].set_xlabel("Strain [-]")
+        self.ax[0,1].set_ylabel("Stress [MPa]")
+        #self.ax[0,1].legend()
+        self.ax[0,1].axvline(self.df["strainLave"][i], c="r")
+        self.ax[0,1].plot(self.df["strainLave"][i],self.df["stress"][i], c="r", marker='v')
+
+
+        self.ax[1,0].cla()
+        self.ax[1,0].plot(self.df["strainTave"],self.df["stress"], label="strainTave",lw=1,c="k")
+        self.ax[1,0].set_xlabel("Strain [-]")
+        self.ax[1,0].set_ylabel("Stress [MPa]")
+        #self.ax[1,0].legend()
+        self.ax[1,0].axvline(self.df["strainTave"][i], c="r")
+        self.ax[1,0].plot(self.df["strainTave"][i],self.df["stress"][i], c="r", marker='v')
+
+
+        self.ax[1,1].cla()
+        self.ax[1,1].plot(self.df["strainLave"],self.df["strainTave"], label="strainLave",lw=1,c="k")
+        self.ax[1,1].set_xlabel("StrainL [-]")
+        self.ax[1,1].set_ylabel("StrainT [-]")
+        #self.ax[1,1].legend()
+        self.ax[1,1].axvline(self.df["strainLave"][i], c="r")
+        self.ax[1,1].plot(self.df["strainLave"][i],self.df["strainTave"][i], c="r", marker='v')
+
+
+
+        
 
 
 
@@ -378,9 +426,8 @@ Test2.do_set()
 
 
 
-
-
-
+Test1.make_plot_animation()
+Test2.make_plot_animation()
 
 
 
